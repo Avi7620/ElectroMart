@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)  # Field to identify admin users
 
 class Product(db.Model):
+    __tablename__ = 'product' 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(50), nullable=False)
@@ -236,5 +237,6 @@ def delete_cart_item(item_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Initializes the database tables within application context
+        db.create_all()  # This creates all tables
     app.run(debug=True)
+
