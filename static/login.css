@@ -142,9 +142,9 @@ p label:hover {
 /* Media Queries for Mobile Responsiveness */
 @media only screen and (max-width: 768px) {
     .signup, .login {
-        width: 90%; /* Make the forms more flexible */
+        width: 70%; /* Make the forms more flexible */
         height: auto;
-        padding: 30px;
+        padding: 0px;
         box-shadow: none;
     }
 
@@ -175,14 +175,14 @@ p label:hover {
 @media only screen and (max-width: 480px) {
     .main {
         flex-direction: column;
-        height: auto;
+        height: 90px;
         padding: 20px;
     }
 
     .signup, .login {
-        width: 100%;
-        height: auto;
-        padding: 20px;
+        width: 40%;
+        height: 1px;
+        padding: 40px;
         box-shadow: none;
     }
 
