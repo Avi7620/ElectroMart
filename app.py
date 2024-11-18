@@ -170,19 +170,30 @@ def product(product_id):
 
 
 @app.route('/update_product/<int:product_id>', methods=['GET', 'POST'])
+@login_required
 def update_product(product_id):
     product = Product.query.get_or_404(product_id)
+    
     if request.method == 'POST':
         product.name = request.form['name']
         product.category = request.form['category']
         product.description = request.form['description']
         product.price = float(request.form['price'])
-        # Handle the image upload and saving here if needed
+        
+        # Check if a new image is uploaded
+        product_image = request.files.get('image')
+        if product_image and product_image.filename != '':
+            image_filename = product_image.filename
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+            product_image.save(image_path)
+            product.image_file = image_filename  # Update the image filename in the database
+        
         db.session.commit()
         flash('Product updated successfully!')
-        return redirect(url_for('admin_dashboard'))  # Redirect to your homepage or wherever you need
-
+        return redirect(url_for('admin_dashboard'))  # Redirect to the admin dashboard or wherever needed
+    
     return render_template('update_product.html', product=product)
+
 
 
 @app.route('/delete_product/<int:product_id>', methods=['POST'])

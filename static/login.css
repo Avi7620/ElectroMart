@@ -1,5 +1,4 @@
-<style>
-    /* CSS for Slide Navbar */
+/* Base Styles */
 body {
     margin: 0;
     padding: 0;
@@ -59,7 +58,8 @@ input[type="checkbox"] {
     opacity: 1;
     visibility: visible;
 }
-/* Additional styling for checkboxes in signup form */
+
+/* Styling for checkboxes in signup form */
 .signup form label {
     display: inline-block;
     margin-right: 8px;
@@ -72,8 +72,6 @@ input[type="checkbox"] {
     width: auto;
     height: auto;
 }
-
-
 
 label {
     font-size: 2em;
@@ -140,4 +138,71 @@ p label:hover {
     color: #2980b9;
 }
 
-</style>
+/* Media Queries for Mobile Responsiveness */
+@media only screen and (max-width: 768px) {
+    .signup, .login {
+        width: 90%;
+        height: auto;
+        padding: 30px;
+        box-shadow: none;
+    }
+
+    label {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    input {
+        font-size: 1em;
+        padding-left: 8px;
+    }
+
+    button {
+        font-size: 1em;
+        height: 45px;
+    }
+
+    p {
+        font-size: 0.9em;
+    }
+
+    p label {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .main {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .signup, .login {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    label {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+    }
+
+    input {
+        font-size: 0.9em;
+        height: 35px;
+    }
+
+    button {
+        font-size: 1em;
+        height: 40px;
+    }
+
+    p {
+        font-size: 0.8em;
+    }
+
+    p label {
+        font-size: 1.1em;
+    }
+}
