@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db23433.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db1.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 db = SQLAlchemy(app)
@@ -28,16 +28,15 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
     image_file = db.Column(db.String(120), nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Link to User model
-
-    # Add relationship
-    admin = db.relationship('User', backref='products')  # Use 'User' instead of 'Admin'
+    admin_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Change 'users.id' to 'user.id'
+    admin = db.relationship('User', backref='products')  # Correct relationship to 'User'
 
 
 class CartItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Change 'user' to 'users'
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)  # Change 'product' to 'products'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Change 'users.id' to 'user.id'
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)  # Ensure consistency here
+
     quantity = db.Column(db.Integer, nullable=False, default=1)
 
     user = db.relationship('User', backref=db.backref('cart_items', lazy=True))
