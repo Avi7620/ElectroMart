@@ -14,6 +14,7 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
     position: relative;
+    flex-direction: column; /* Make the main section a column layout for mobile */
 }
 
 /* Hide the checkbox */
@@ -23,7 +24,7 @@ input[type="checkbox"] {
 
 .signup, .login {
     width: 380px;
-    height: 480px;
+    height: auto; /* Set height to auto for better responsiveness */
     background: #fff;
     border-radius: 10px;
     position: absolute;
@@ -141,7 +142,7 @@ p label:hover {
 /* Media Queries for Mobile Responsiveness */
 @media only screen and (max-width: 768px) {
     .signup, .login {
-        width: 90%;
+        width: 90%; /* Make the forms more flexible */
         height: auto;
         padding: 30px;
         box-shadow: none;
@@ -175,12 +176,14 @@ p label:hover {
     .main {
         flex-direction: column;
         height: auto;
+        padding: 20px;
     }
 
     .signup, .login {
         width: 100%;
         height: auto;
         padding: 20px;
+        box-shadow: none;
     }
 
     label {
