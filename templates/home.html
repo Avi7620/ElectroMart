@@ -10,7 +10,6 @@
                 <p class="product-price">Price:₹{{ product.price }}</p>
                 <a href="{{ url_for('product', product_id=product.id) }}" class="btn">View Details</a>
                 {% if current_user.is_admin %}  <!-- Check if the user is an admin -->
-          
                 {% endif %}
             </div>
         {% endfor %}
@@ -76,6 +75,19 @@
         /* Hover effect for the button */
         .btn:hover {
             background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Responsive styles for mobile screens */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr); /* Display 2 products side by side */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr; /* Display 1 product per row on smaller screens */
+            }
         }
     </style>
 {% endblock %}

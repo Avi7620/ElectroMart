@@ -122,11 +122,19 @@ tr:hover {
         display: flex;
     }
 
+    .nav-links li {
+        margin: 10px 0; /* Add space between items when menu is open */
+    }
+
     .hamburger {
         display: block;
         font-size: 24px;
         color: white;
         cursor: pointer;
+    }
+
+    .hamburger.active {
+        color: #4CAF50; /* Change color of hamburger when active */
     }
 }
 
