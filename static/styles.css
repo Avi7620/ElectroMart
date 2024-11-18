@@ -12,11 +12,11 @@ h1 {
     font-size: 2em;
     margin-bottom: 20px;
 }
-/* Logo image */
+
+/* Logo Image */
 .logo-image {
-    height: 70px; /* Adjust the height of the logo */
-    width: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Add spacing if needed */
+    height: 50px; /* Smaller size */
+    width: auto;
 }
 
 /* Table Styling */
@@ -24,6 +24,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    font-size: 16px;
 }
 
 th, td {
@@ -41,33 +42,31 @@ tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Button Styling */
-button {
-    background-color: #ff4c4c;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-button:hover {
-    background-color: #d43f3f;
-}
-
-a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-}
-
-a:hover {
-    background-color: #45a049;
+/* Responsive Table */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+    th, td {
+        padding: 8px;
+    }
+    thead {
+        display: none; /* Hide table headers on small screens */
+    }
+    tr {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+    }
 }
 
 /* Navbar Styling */
@@ -81,12 +80,6 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.logo {
-    font-size: 24px;
-    color: white;
-    text-decoration: none;
 }
 
 .nav-links {
@@ -111,69 +104,7 @@ a:hover {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* User Icon */
-.user-icon {
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-left: 20px;
-}
-
-.user-icon i {
-    font-size: 25px;
-    margin-right: 5px;
-}
-
-/* Login Page */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 auto;
-    width: 300px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-label {
-    margin: 10px 0 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"] {
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-bottom: 15px;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #28a745;
-}
-
-input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-input[type="submit"]:hover {
-    background-color: #218838;
-}
-
-/* Responsive Design */
+/* Responsive Navbar */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -183,8 +114,8 @@ input[type="submit"]:hover {
         top: 60px;
         right: 0;
         width: 100%;
-        padding: 10px 0;
         text-align: center;
+        padding: 10px 0;
     }
 
     .nav-links.active {
@@ -197,34 +128,17 @@ input[type="submit"]:hover {
         color: white;
         cursor: pointer;
     }
-
-    .container {
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
 }
 
-@media (max-width: 480px) {
-    table {
-        font-size: 14px;
-    }
+/* User Icon */
+.user-icon {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-left: 20px;
+}
 
-    button {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-
-    a {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        font-size: 14px;
-    }
-
-    input[type="submit"] {
-        font-size: 14px;
-    }
+.user-icon i {
+    font-size: 25px;
+    margin-right: 5px;
 }
