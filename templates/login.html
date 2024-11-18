@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
-
-<body>
-
     <div class="main">
         <!-- Hidden Checkbox for toggling forms -->
         <input type="checkbox" id="chk" aria-hidden="true">
 
-        <!-- Signup Form -->
         <!-- Signup Form -->
         <div class="signup">
             <form action="{{ url_for('register') }}" method="POST">
@@ -43,7 +39,6 @@
             </form>
         </div>
 
-
         <!-- Login Form -->
         <div class="login">
             <form method="POST" action="{{ url_for('login') }}">
@@ -65,19 +60,15 @@
             </form>
         </div>
     </div>
-
-
-</body>
-<script>
-    document.getElementById('signupForm').addEventListener('submit', function (event) {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm_password').value;
-
-        if (password !== confirmPassword) {
-            event.preventDefault(); // Prevent form submission
-            alert('Passwords do not match. Please try again.');
-        }
-    });
-</script>
-
-</html>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+    
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Prevent form submission
+                alert('Passwords do not match. Please try again.');
+            }
+        });
+    </script>
+{% endblock %}
