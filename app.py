@@ -62,35 +62,48 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # During registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        is_admin = request.form.get('admin') == 'on'  # Checkbox for admin registration
+    try:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            confirm_password = request.form['confirm_password']
+            is_admin = request.form.get('admin') == 'on'
+            
+            # Check if passwords match
+            if password != confirm_password:
+                flash("Passwords do not match. Please try again.")
+                return redirect(url_for('register'))
 
-        hashed_password = generate_password_hash(password)  # Use default hash method
-        new_user = User(username=username, password=hashed_password, is_admin=is_admin)
+            # Hash the password and save the user
+            hashed_password = generate_password_hash(password)
+            new_user = User(username=username, password=hashed_password, is_admin=is_admin)
 
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Registration successful Go to Login !!!")
+            return redirect(url_for('login'))
+        
+        return render_template('login.html')
+    except Exception as e:
+        flash("Use Another Username!")
+        return redirect(url_for('register'))
 
-    return render_template('register.html')
 
-
-
-
-# During login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('home' if user.is_admin else 'home'))
-        flash('Invalid credentials')
-    return render_template('login.html')
+    try:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for('home'))
+            flash('Invalid credentials')
+        return render_template('login.html')
+    except Exception as e:
+        flash(f"Login failed: {str(e)}")
+        return redirect(url_for('login'))
 
 
 @app.route('/logout')
@@ -117,39 +130,37 @@ import os
 @app.route('/add_product', methods=['GET', 'POST'])
 @login_required
 def add_product():
-    if request.method == 'POST':
-        product_name = request.form['name']
-        product_category = request.form['category']
-        product_description = request.form['description']
-        product_price = request.form['price']
-        product_image = request.files['image']
+    try:
+        if request.method == 'POST':
+            product_name = request.form['name']
+            product_category = request.form['category']
+            product_description = request.form['description']
+            product_price = request.form['price']
+            product_image = request.files['image']
 
-        # Check if an image was uploaded
-        if product_image and product_image.filename != '':
-            # Save the image
-            image_filename = product_image.filename
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
-            product_image.save(image_path)  # Save the image to static/uploads/
+            if product_image and product_image.filename != '':
+                image_filename = product_image.filename
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+                product_image.save(image_path)
 
-            # Create a new product instance
-            new_product = Product(
-                name=product_name,
-                category=product_category,
-                description=product_description,
-                price=product_price,
-                image_file=image_filename,  # Save only the filename to the database
-                admin_id=current_user.id  # Assign current admin ID
-            )
-
-            db.session.add(new_product)
-            db.session.commit()
-            flash('Product added successfully!')  # Add a success message
-            return redirect(url_for('admin_dashboard'))
-
-        else:
-            flash('No image uploaded or invalid image. Please try again.')  # Error message
-
-    return render_template('add_product.html')
+                new_product = Product(
+                    name=product_name,
+                    category=product_category,
+                    description=product_description,
+                    price=product_price,
+                    image_file=image_filename,
+                    admin_id=current_user.id
+                )
+                db.session.add(new_product)
+                db.session.commit()
+                flash('Product added successfully!')
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash('No image uploaded or invalid image.')
+        return render_template('add_product.html')
+    except Exception as e:
+        flash(f"Failed to add product: {str(e)}")
+        return redirect(url_for('add_product'))
 
 
 @app.route('/product/<int:product_id>')
@@ -177,13 +188,17 @@ def update_product(product_id):
 @app.route('/delete_product/<int:product_id>', methods=['POST'])
 @login_required
 def delete_product(product_id):
-    product = Product.query.get(product_id)
-    if product and product.admin_id == current_user.id:  # Check if admin owns the product
-        db.session.delete(product)
-        db.session.commit()
-        return redirect(url_for('admin_dashboard'))
-    else:
-        return "You do not have permission to delete this product.", 403
+    try:
+        product = Product.query.get(product_id)
+        if product and product.admin_id == current_user.id:
+            db.session.delete(product)
+            db.session.commit()
+            flash('Product deleted successfully!')
+        else:
+            flash("You do not have permission to delete this product.")
+    except Exception as e:
+        flash(f"Failed to delete product: {str(e)}")
+    return redirect(url_for('admin_dashboard'))
 
 
 
@@ -216,9 +231,13 @@ def add_to_cart(product_id):
 @app.route('/cart')
 @login_required
 def cart():
-    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
-    total = sum(item.product.price * item.quantity for item in cart_items)  # Calculate total here
-    return render_template('cart.html', cart_items=cart_items, total=total)  # Pass total to template
+    try:
+        cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+        total = sum(item.product.price * item.quantity for item in cart_items)
+        return render_template('cart.html', cart_items=cart_items, total=total)
+    except Exception as e:
+        flash(f"Could not load cart: {str(e)}")
+        return redirect(url_for('home'))
 
 
 @app.route('/delete_cart_item/<int:item_id>', methods=['POST'])
